@@ -83,3 +83,25 @@ round(avg(highway_mileage),2) as avg_highway_mileage,
 round(avg(highway_mileage)/avg(city_mileage),2) as efficiency_ratio
  FROM playground.automobile group by 1
  order by round(avg(highway_mileage)/avg(city_mileage),2) desc
+
+## 7. Filtering Dance Contest Scores
+
+WITH extreme_scores AS (
+    SELECT 
+        arbiter_id,
+        COUNT(CASE WHEN first_criterion = (SELECT MIN(first_criterion) FROM playground.dance_scores)
+                    OR first_criterion = (SELECT MAX(first_criterion) FROM playground.dance_scores) THEN 1 END) +
+        COUNT(CASE WHEN second_criterion = (SELECT MIN(second_criterion) FROM playground.dance_scores)
+                    OR second_criterion = (SELECT MAX(second_criterion) FROM playground.dance_scores) THEN 1 END) +
+        COUNT(CASE WHEN third_criterion = (SELECT MIN(third_criterion) FROM playground.dance_scores)
+                    OR third_criterion = (SELECT MAX(third_criterion) FROM playground.dance_scores) THEN 1 END) AS extreme_count
+    FROM playground.dance_scores
+    GROUP BY arbiter_id
+)
+SELECT ds.*
+FROM playground.dance_scores ds
+JOIN extreme_scores es ON ds.arbiter_id = es.arbiter_id
+WHERE es.extreme_count < 2
+ORDER BY ds.arbiter_id
+
+ 
