@@ -104,4 +104,9 @@ JOIN extreme_scores es ON ds.arbiter_id = es.arbiter_id
 WHERE es.extreme_count < 2
 ORDER BY ds.arbiter_id
 
- 
+## 8.  Identify Products Sold Exclusively in January 2024
+
+select a.product_id,b.product_name from
+(SELECT product_id FROM playground.product_sales where sale_date >=to_date('2024-01-01','yyyy-mm-dd') and sale_date<=to_date('2024-01-31','yyyy-mm-dd') )a
+join
+playground.products b on a.product_id=b.product_id
