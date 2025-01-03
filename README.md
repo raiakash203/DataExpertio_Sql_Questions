@@ -110,3 +110,19 @@ select a.product_id,b.product_name from
 (SELECT product_id FROM playground.product_sales where sale_date >=to_date('2024-01-01','yyyy-mm-dd') and sale_date<=to_date('2024-01-31','yyyy-mm-dd') )a
 join
 playground.products b on a.product_id=b.product_id
+
+
+## 9. Calculating Median Searches per User
+
+SELECT AVG(searches) AS "median"
+FROM
+(
+   SELECT searches,
+      ROW_NUMBER() OVER (ORDER BY searches ASC) AS RowAsc,
+      ROW_NUMBER() OVER (ORDER BY searches DESC) AS RowDesc
+   FROM playground.search_freq
+) data
+WHERE
+   RowAsc IN (RowDesc, RowDesc - 1, RowDesc + 1)
+
+https://subhralina.medium.com/5-ways-to-calculate-median-in-sql-cffba38aa945
