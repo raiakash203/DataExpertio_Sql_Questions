@@ -126,3 +126,8 @@ WHERE
    RowAsc IN (RowDesc, RowDesc - 1, RowDesc + 1)
 
 https://subhralina.medium.com/5-ways-to-calculate-median-in-sql-cffba38aa945
+
+
+
+https://www.kdnuggets.com/2020/11/5-tricky-sql-queries-solved.html
+
